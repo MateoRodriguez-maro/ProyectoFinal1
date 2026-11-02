@@ -36,6 +36,7 @@ public:
 
     void consultarProfesor(string idProfesor) const;
     bool existeRegistroActivo(string idProfesor, string cedula) const;
+    bool existeNRCyHorario(string NRC, string horaInicio, string horaFin) const;
 };
 
 #endif

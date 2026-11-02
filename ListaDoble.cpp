@@ -102,6 +102,28 @@ bool ListaDoble::existeRegistroActivo(string idProfesor, string cedula) const {
 
     return false;
 }
+// Verificar si existe un NRC con el mismo horario.
+bool ListaDoble::existeNRCyHorario(
+    string NRC, string horaInicio, string horaFin) const {
+
+    const Nodo* actual = cabeza;
+
+    while (actual != nullptr) {
+
+        Horario horario = actual->dato.getMateria().getHorario();
+
+        if (actual->dato.getMateria().getNRC() == NRC &&
+            horario.getHoraInicio() == horaInicio &&
+            horario.getHoraFin() == horaFin) {
+
+            return true;
+        }
+
+        actual = actual->siguiente;
+    }
+
+    return false;
+}
 
 // Eliminar por ID.
 bool ListaDoble::eliminar(int id) {

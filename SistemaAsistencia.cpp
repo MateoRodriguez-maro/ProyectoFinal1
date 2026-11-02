@@ -243,9 +243,28 @@ void SistemaAsistencia::registrarEntrada() {
         string horaInicio = leerHora("Hora de inicio (HH:MM): ");
         string horaFin = leerHora("Hora de fin (HH:MM): ");
 
+        
         Horario horario(idHorario, horaInicio, horaFin);
 
+// Ve si hay misma materia 
+        if (lista.existeNRCyHorario(NRC, horaInicio, horaFin)) {
+        cout << "\nError: ya existe una materia registrada con ese NRC y horario.\n";
+        return;
+        }
+
+
         string horaEntrada = leerHora("Hora de entrada (HH:MM): ");
+
+
+        int minutosEntrada = Horario::convertirHora(horaEntrada);
+
+        if (minutosEntrada < Horario::convertirHora("07:00") ||
+        minutosEntrada > Horario::convertirHora("19:00")) {
+
+        cout << "\nError: no se permiten registros fuera del horario general.\n";
+        cout << "El horario permitido es de 07:00 a 19:00.\n";
+        return;
+        }
 
         if (!horario.validarEntrada(horaEntrada)) {
             int inicio = Horario::convertirHora(horaInicio);
