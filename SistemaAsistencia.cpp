@@ -186,7 +186,7 @@ bool SistemaAsistencia::validarNombre(string nombre) {
     return tieneLetra;
 }
 
-// Leer nombres y apellidos.
+
 string SistemaAsistencia::leerNombre(string mensaje) {
     string nombre;
 
@@ -203,7 +203,7 @@ string SistemaAsistencia::leerNombre(string mensaje) {
     return nombre;
 }
 
-// Leer y validar hora.
+
 string SistemaAsistencia::leerHora(string mensaje) {
     string hora;
 
@@ -219,7 +219,7 @@ string SistemaAsistencia::leerHora(string mensaje) {
     }
 }
 
-// Registrar entrada.
+
 void SistemaAsistencia::registrarEntrada() {
     try {
         cout << "\n======= REGISTRAR ENTRADA =======\n";
@@ -246,7 +246,7 @@ void SistemaAsistencia::registrarEntrada() {
         
         Horario horario(idHorario, horaInicio, horaFin);
 
-// Ve si hay misma materia 
+
         if (lista.existeNRCyHorario(NRC, horaInicio, horaFin)) {
         cout << "\nError: ya existe una materia registrada con ese NRC y horario.\n";
         return;
@@ -310,7 +310,7 @@ void SistemaAsistencia::registrarEntrada() {
     }
 }
 
-// Registrar salida.
+
 void SistemaAsistencia::registrarSalida() {
     try {
         cout << "\n======= REGISTRAR SALIDA =======\n";
@@ -362,7 +362,7 @@ void SistemaAsistencia::registrarSalida() {
     }
 }
 
-// Consultar registros.
+
 void SistemaAsistencia::consultarRegistros() {
     cout << "\n======= CONSULTAR REGISTROS =======\n";
 
@@ -371,7 +371,7 @@ void SistemaAsistencia::consultarRegistros() {
     lista.consultarProfesor(idProfesor);
 }
 
-// Eliminar registro.
+
 void SistemaAsistencia::eliminarRegistro() {
     cout << "\n======= ELIMINAR REGISTRO =======\n";
 
