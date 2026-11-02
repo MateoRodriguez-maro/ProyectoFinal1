@@ -35,6 +35,7 @@ public:
     void imprimir() const;
 
     void consultarProfesor(string idProfesor) const;
+    bool existeRegistroActivo(string idProfesor, string cedula) const;
 };
 
 #endif

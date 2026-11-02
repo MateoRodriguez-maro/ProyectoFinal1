@@ -81,6 +81,27 @@ RegistroAsistencia* ListaDoble::buscarPendiente(
 
     return nullptr;
 }
+// Verificar si un profesor tiene una asistencia pendiente.
+bool ListaDoble::existeRegistroActivo(string idProfesor, string cedula) const {
+
+    const Nodo* actual = cabeza;
+
+    while (actual != nullptr) {
+
+        if (!actual->dato.tieneSalida()) {
+
+            if (actual->dato.getProfesor().getIdProfesor() == idProfesor ||
+                actual->dato.getProfesor().getCedula() == cedula) {
+
+                return true;
+            }
+        }
+
+        actual = actual->siguiente;
+    }
+
+    return false;
+}
 
 // Eliminar por ID.
 bool ListaDoble::eliminar(int id) {
