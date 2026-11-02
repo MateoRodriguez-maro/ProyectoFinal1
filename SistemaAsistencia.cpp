@@ -239,7 +239,7 @@ void SistemaAsistencia::registrarEntrada() {
 
         string nombreMateria = leerNombre("Nombre de la materia: ");
 
-        string idHorario = leerNumero("ID del horario: ");
+        string idHorario = "H" + NRC;
         string horaInicio = leerHora("Hora de inicio (HH:MM): ");
         string horaFin = leerHora("Hora de fin (HH:MM): ");
 
