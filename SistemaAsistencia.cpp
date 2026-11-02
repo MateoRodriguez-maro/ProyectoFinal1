@@ -226,13 +226,13 @@ void SistemaAsistencia::registrarEntrada() {
 
         string idProfesor = leerNumero("ID del profesor: ");
         string NRC = leerNumero("NRC de la materia: ");
-
-        if (lista.buscarPendiente(idProfesor, NRC) != nullptr) {
-            cout << "\nEste profesor ya tiene un registro para esta materia.\n";
-            return;
-        }
-
         string cedula = leerCedula("Cedula: ");
+
+        if (lista.existeRegistroActivo(idProfesor, cedula)) {
+        cout << "\nError: el profesor tiene una asistencia pendiente de salida.\n";
+        cout << "Primero debe registrar la salida de su materia anterior.\n";
+        return;
+        }  //desde aqui
         string nombres = leerNombre("Nombres: ");
         string apellidos = leerNombre("Apellidos: ");
         string especialidad = leerNombre("Especialidad: ");
