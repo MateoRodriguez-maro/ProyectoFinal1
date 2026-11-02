@@ -14,6 +14,11 @@ private:
     string leerTexto(string mensaje);
     string leerNumero(string mensaje);
     string leerHora(string mensaje);
+    string leerCedula(string mensaje);
+    string leerNombre(string mensaje);
+
+    bool validarCedulaEcuatoriana(string cedula);
+    bool validarNombre(string nombre);
 
 public:
     SistemaAsistencia();

@@ -14,6 +14,7 @@ private:
     Materia materia;
     string horaEntrada;
     string horaSalida;
+    
 
 public:
     RegistroAsistencia(int idRegistro, Profesor profesor,
