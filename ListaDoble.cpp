@@ -70,7 +70,8 @@ RegistroAsistencia* ListaDoble::buscarPendiente(
     while (actual != nullptr) {
 
         if (actual->dato.getProfesor().getIdProfesor() == idProfesor &&
-            actual->dato.getMateria().getNRC() == NRC) {
+            actual->dato.getMateria().getNRC() == NRC &&
+            !actual->dato.tieneSalida()) {
 
             return &actual->dato;
         }
