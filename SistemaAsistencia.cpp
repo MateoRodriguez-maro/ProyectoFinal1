@@ -235,9 +235,9 @@ void SistemaAsistencia::registrarEntrada() {
         string cedula = leerCedula("Cedula: ");
         string nombres = leerNombre("Nombres: ");
         string apellidos = leerNombre("Apellidos: ");
-        string especialidad = leerTexto("Especialidad: ");
+        string especialidad = leerNombre("Especialidad: ");
 
-        string nombreMateria = leerTexto("Nombre de la materia: ");
+        string nombreMateria = leerNombre("Nombre de la materia: ");
 
         string idHorario = leerNumero("ID del horario: ");
         string horaInicio = leerHora("Hora de inicio (HH:MM): ");
