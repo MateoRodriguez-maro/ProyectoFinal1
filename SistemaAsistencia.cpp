@@ -1,7 +1,9 @@
+
 #include "SistemaAsistencia.h"
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
+#include <string>
 
 using namespace std;
 
@@ -54,6 +56,153 @@ string SistemaAsistencia::leerNumero(string mensaje) {
     return dato;
 }
 
+// Validar cedula ecuatoriana.
+bool SistemaAsistencia::validarCedulaEcuatoriana(string cedula) {
+
+    if (cedula.length() != 10) {
+        return false;
+    }
+
+    // Verificar que contenga solamente numeros.
+    for (int i = 0; i < 10; i++) {
+        if (cedula[i] < '0' || cedula[i] > '9') {
+            return false;
+        }
+    }
+
+    // Verificar provincia.
+    int provincia = (cedula[0] - '0') * 10 + (cedula[1] - '0');
+    int tercerDigito = cedula[2] - '0';
+
+    if (!((provincia >= 1 && provincia <= 24) || provincia == 30)) {
+        return false;
+    }
+
+    // Validar tercer digito.
+    if (provincia == 30) {
+        if (tercerDigito != 4 && tercerDigito != 5) {
+            return false;
+        }
+    }
+    else if (tercerDigito > 5) {
+        return false;
+    }
+
+    // Calcular digito verificador.
+    int suma = 0;
+
+    for (int i = 0; i < 9; i++) {
+        int valor = cedula[i] - '0';
+
+        if (i % 2 == 0) {
+            valor *= 2;
+
+            if (valor > 9) {
+                valor -= 9;
+            }
+        }
+
+        suma += valor;
+    }
+
+    int digitoVerificador = (10 - (suma % 10)) % 10;
+
+    return digitoVerificador == (cedula[9] - '0');
+}
+
+// Solicitar una cedula valida.
+string SistemaAsistencia::leerCedula(string mensaje) {
+    string cedula;
+
+    do {
+        cedula = leerNumero(mensaje);
+
+        if (!validarCedulaEcuatoriana(cedula)) {
+            cout << "Error: la cedula ecuatoriana no es valida.\n";
+        }
+
+    } while (!validarCedulaEcuatoriana(cedula));
+
+    return cedula;
+}
+
+// Validar nombres y apellidos.
+bool SistemaAsistencia::validarNombre(string nombre) {
+
+    if (nombre.empty()) {
+        return false;
+    }
+
+    bool tieneLetra = false;
+
+    for (int i = 0; i < (int)nombre.length(); i++) {
+
+        unsigned char caracter = nombre[i];
+
+        // Letras normales.
+        if ((caracter >= 'A' && caracter <= 'Z') ||
+            (caracter >= 'a' && caracter <= 'z')) {
+
+            tieneLetra = true;
+        }
+        // Permitir espacios.
+        else if (caracter == ' ') {
+            continue;
+        }
+        // Permitir tildes, ñ y ü.
+        else if (caracter == 0xC3 && i + 1 < (int)nombre.length()) {
+
+            unsigned char siguiente = nombre[i + 1];
+
+            switch (siguiente) {
+                case 0x81: // Á
+                case 0x89: // É
+                case 0x8D: // Í
+                case 0x93: // Ó
+                case 0x9A: // Ú
+                case 0x91: // Ñ
+                case 0x9C: // Ü
+                case 0xA1: // á
+                case 0xA9: // é
+                case 0xAD: // í
+                case 0xB3: // ó
+                case 0xBA: // ú
+                case 0xB1: // ñ
+                case 0xBC: // ü
+
+                    tieneLetra = true;
+                    i++;
+                    break;
+
+                default:
+                    return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    return tieneLetra;
+}
+
+// Leer nombres y apellidos.
+string SistemaAsistencia::leerNombre(string mensaje) {
+    string nombre;
+
+    do {
+        cout << mensaje;
+        getline(cin, nombre);
+
+        if (!validarNombre(nombre)) {
+            cout << "Error: ingrese solamente letras y espacios.\n";
+        }
+
+    } while (!validarNombre(nombre));
+
+    return nombre;
+}
+
 // Leer y validar hora.
 string SistemaAsistencia::leerHora(string mensaje) {
     string hora;
@@ -83,9 +232,9 @@ void SistemaAsistencia::registrarEntrada() {
             return;
         }
 
-        string cedula = leerNumero("Cedula: ");
-        string nombres = leerTexto("Nombres: ");
-        string apellidos = leerTexto("Apellidos: ");
+        string cedula = leerCedula("Cedula: ");
+        string nombres = leerNombre("Nombres: ");
+        string apellidos = leerNombre("Apellidos: ");
         string especialidad = leerTexto("Especialidad: ");
 
         string nombreMateria = leerTexto("Nombre de la materia: ");
@@ -229,7 +378,7 @@ void SistemaAsistencia::imprimirLista() {
     lista.imprimir();
 }
 
-// Menú principal.
+// Menu principal.
 void SistemaAsistencia::menuPrincipal() {
     string opcion;
 
