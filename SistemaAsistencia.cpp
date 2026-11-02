@@ -392,12 +392,20 @@ void SistemaAsistencia::eliminarRegistro() {
     }
 }
 
-// Imprimir lista.
+
 void SistemaAsistencia::imprimirLista() {
+
     lista.imprimir();
+
+    if (lista.exportarTXT("asistencias.txt")) {
+        cout << "\nArchivo asistencias.txt generado correctamente.\n";
+    }
+    else {
+        cout << "\nError al generar el archivo TXT.\n";
+    }
 }
 
-// Menu principal.
+
 void SistemaAsistencia::menuPrincipal() {
     string opcion;
 
