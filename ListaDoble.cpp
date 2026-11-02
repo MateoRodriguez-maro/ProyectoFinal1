@@ -1,21 +1,22 @@
 #include "ListaDoble.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
-// Constructor del nodo.
+
 ListaDoble::Nodo::Nodo(RegistroAsistencia dato) : dato(dato) {
     anterior = nullptr;
     siguiente = nullptr;
 }
 
-// Constructor de la lista.
+
 ListaDoble::ListaDoble() {
     cabeza = nullptr;
     cola = nullptr;
 }
 
-// Destructor.
+
 ListaDoble::~ListaDoble() {
     Nodo* actual = cabeza;
 
@@ -29,7 +30,7 @@ ListaDoble::~ListaDoble() {
     cola = nullptr;
 }
 
-// Insertar al final.
+
 void ListaDoble::insertar(RegistroAsistencia registro) {
     Nodo* nuevo = new Nodo(registro);
 
@@ -46,7 +47,7 @@ void ListaDoble::insertar(RegistroAsistencia registro) {
     cout << "\nRegistro insertado correctamente.\n";
 }
 
-// Buscar por ID.
+
 RegistroAsistencia* ListaDoble::buscar(int id) {
     Nodo* actual = cabeza;
 
@@ -61,7 +62,7 @@ RegistroAsistencia* ListaDoble::buscar(int id) {
     return nullptr;
 }
 
-// Buscar por profesor y materia.
+
 RegistroAsistencia* ListaDoble::buscarPendiente(
     string idProfesor, string NRC) {
 
@@ -81,7 +82,7 @@ RegistroAsistencia* ListaDoble::buscarPendiente(
 
     return nullptr;
 }
-// Verificar si un profesor tiene una asistencia pendiente.
+
 bool ListaDoble::existeRegistroActivo(string idProfesor, string cedula) const {
 
     const Nodo* actual = cabeza;
@@ -102,7 +103,7 @@ bool ListaDoble::existeRegistroActivo(string idProfesor, string cedula) const {
 
     return false;
 }
-// Verificar si existe un NRC con el mismo horario.
+
 bool ListaDoble::existeNRCyHorario(
     string NRC, string horaInicio, string horaFin) const {
 
@@ -125,7 +126,7 @@ bool ListaDoble::existeNRCyHorario(
     return false;
 }
 
-// Eliminar por ID.
+
 bool ListaDoble::eliminar(int id) {
     Nodo* actual = cabeza;
 
@@ -160,7 +161,7 @@ bool ListaDoble::eliminar(int id) {
     return false;
 }
 
-// Imprimir todos los registros.
+
 void ListaDoble::imprimir() const {
     Nodo* actual = cabeza;
 
@@ -177,7 +178,70 @@ void ListaDoble::imprimir() const {
     }
 }
 
-// Consultar por profesor.
+bool ListaDoble::exportarTXT(string nombreArchivo) const {
+
+    ofstream archivo(nombreArchivo);
+
+    if (!archivo.is_open()) {
+        return false;
+    }
+
+    const Nodo* actual = cabeza;
+
+    archivo << "========================================\n";
+    archivo << "       SISTEMA DE ASISTENCIA DOCENTE\n";
+    archivo << "========================================\n";
+
+    if (actual == nullptr) {
+        archivo << "\nNo existen registros de asistencia.\n";
+    }
+
+    while (actual != nullptr) {
+
+        archivo << "\n----------------------------------------\n";
+        archivo << "ID Registro: " << actual->dato.getIdRegistro() << endl;
+        archivo << "Profesor: "
+                << actual->dato.getProfesor().getNombreCompleto() << endl;
+        archivo << "Cedula: "
+                << actual->dato.getProfesor().getCedula() << endl;
+        archivo << "ID Profesor: "
+                << actual->dato.getProfesor().getIdProfesor() << endl;
+        archivo << "Especialidad: "
+                << actual->dato.getProfesor().getEspecialidad() << endl;
+
+        archivo << "Materia: "
+                << actual->dato.getMateria().getNombreMateria() << endl;
+        archivo << "NRC: "
+                << actual->dato.getMateria().getNRC() << endl;
+
+        archivo << "Horario: "
+                << actual->dato.getMateria().getHorario().getHoraInicio()
+                << " - "
+                << actual->dato.getMateria().getHorario().getHoraFin()
+                << endl;
+
+        archivo << "Entrada: "
+                << actual->dato.getHoraEntrada() << endl;
+
+        if (actual->dato.tieneSalida()) {
+            archivo << "Salida: "
+                    << actual->dato.getHoraSalida() << endl;
+        }
+        else {
+            archivo << "Salida: Pendiente" << endl;
+        }
+
+        archivo << "----------------------------------------\n";
+
+        actual = actual->siguiente;
+    }
+
+    archivo.close();
+
+    return true;
+}
+
+
 void ListaDoble::consultarProfesor(string idProfesor) const {
     Nodo* actual = cabeza;
     bool encontrado = false;
